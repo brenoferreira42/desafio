@@ -1,0 +1,29 @@
+# Compiled Python bytecode
+*.pyc
+__pycache__/
+
+# Virtual environment (e.g. created with virtualenv or pipenv)
+venv/
+env/
+.venv/
+*.env
+
+# Installed dependencies
+# You can adjust this based on the dependency manager you're using
+# For example, pipenv, pip, poetry, etc.
+/.venv
+/.vscode
+# .vscode - Visual Studio Code
+# venv, bin, etc - Virtualenv / environment folder
+# env - conda environment
+# .ipynb_checkpoints - Jupyter Notebook checkpoints
+
+# Log files and temporary files
+*.log
+*.cache
+*.swp
+*.tmp
+
+# IDE-specific configuration files
+.idea/
+.vscode/
