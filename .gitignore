@@ -27,3 +27,6 @@ env/
 # IDE-specific configuration files
 .idea/
 .vscode/
+
+# Ruff cache
+.ruff_cache/
