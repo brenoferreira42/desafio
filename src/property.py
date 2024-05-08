@@ -1,8 +1,5 @@
-import random
-
-
 class Property(object):
-    def __init__(self):
-        self.sell_value = random.randint(150, 10000)
-        self.rent_value = random.randint(150, 5000)
+    def __init__(self, sell_value, rent_value):
+        self.sell_value = sell_value
+        self.rent_value = rent_value
         self.owner = None

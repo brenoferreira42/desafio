@@ -7,3 +7,7 @@ class Player(object):
     @property
     def balance(self):
         return self.__balance
+
+    @balance.setter
+    def balance(self, value):
+        self.__balance = value
