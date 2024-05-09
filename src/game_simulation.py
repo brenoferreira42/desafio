@@ -5,11 +5,12 @@ from src.player.play_round import PlayRound
 
 
 class GameSimulation(object):
-    def __init__(self):
+    def __init__(self, report):
         self.players = PlayersGenerator().construct_players()
         self.properties = PropertiesGenerator().construct_properties()
         self.board = GameBoard(self.players, self.properties)
         self.__play_round = PlayRound()
+        self.__report = report
 
     def play_turn(self):
         selected_player = self.board.choose_player()
@@ -30,12 +31,6 @@ class GameSimulation(object):
             self.board.advance_current_player_index()
             return {"win": False}
 
-    def generate_turn_report(self, winner, turn_duration):
-        return {
-            "winner_behaviour": winner.type.__name__,
-            "turn_duration": turn_duration,
-        }
-
     def play(self):
         winner = None
         turn_duration = 0
@@ -45,8 +40,10 @@ class GameSimulation(object):
                 if i == 999 and turn["win"] is False:
                     winner = self.board.get_richest_player_in_game()["player"]
                     turn_duration = i
-                    return self.generate_turn_report(winner, turn_duration)
+                    self.__report.generate_turn_report(winner, turn_duration)
+                    break
                 elif turn["win"] is True:
                     winner = turn["winner"]
                     turn_duration = i
-                    return self.generate_turn_report(winner, turn_duration)
+                    self.__report.generate_turn_report(winner, turn_duration)
+                    break
