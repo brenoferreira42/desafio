@@ -9,10 +9,10 @@ class GameSimulation(object):
         self.players = PlayersGenerator().construct_players()
         self.properties = PropertiesGenerator().construct_properties()
         self.board = GameBoard(self.players, self.properties)
-        self.__play_round = PlayRound()
-        self.__report = report
+        self.play_round = PlayRound()
+        self.report = report
 
-    def play_turn(self):
+    def __play_turn(self):
         selected_player = self.board.choose_player()
         dice_face = self.board.roll_dice()
         board_position = self.board.advance_position_in_board(
@@ -20,14 +20,12 @@ class GameSimulation(object):
         )
 
         if selected_player.balance <= 0:
-            self.board.remove_current_player(selected_player)
+            self.board.remove_current_player()
             return {"win": False}
         elif len(self.board.get_players_in_game()) == 1 and selected_player.balance > 0:
             return {"win": True, "winner": selected_player}
         else:
-            self.__play_round.play(
-                self.board.properties[board_position], selected_player
-            )
+            self.play_round.play(self.board.properties[board_position], selected_player)
             self.board.advance_current_player_index()
             return {"win": False}
 
@@ -35,15 +33,15 @@ class GameSimulation(object):
         winner = None
         turn_duration = 0
         for i in range(1000):
-            if not len(self.players) == 0:
-                turn = self.play_turn()
+            if not len(self.board.get_players_in_game()) == 0:
+                turn = self.__play_turn()
                 if i == 999 and turn["win"] is False:
                     winner = self.board.get_richest_player_in_game()["player"]
                     turn_duration = i
-                    self.__report.generate_turn_report(winner, turn_duration)
+                    self.report.generate_turn_report(winner, turn_duration)
                     break
                 elif turn["win"] is True:
                     winner = turn["winner"]
                     turn_duration = i
-                    self.__report.generate_turn_report(winner, turn_duration)
+                    self.report.generate_turn_report(winner, turn_duration)
                     break
