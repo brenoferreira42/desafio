@@ -38,7 +38,9 @@ class Report(object):
         print(f"Média de turnos por partida: {average_turns:.2f}")
         print("Porcentagem de vitórias por comportamento dos jogadores:")
 
-        for behavior, wins in wins_by_behavior.items():
+        sorted_wins_by_behavior = sorted(wins_by_behavior.items(), key=lambda x: x[1])
+
+        for behavior, wins in sorted_wins_by_behavior.items():
             win_percentage = (wins / total_games) * 100
             print(f"  {behavior}: {win_percentage:.2f}%")
 
