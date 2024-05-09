@@ -8,16 +8,6 @@ class GameBoard(object):
         self.players = players
         self.properties = properties
 
-    def __arrange_players_in_board(self):
-        for i in range(len(self.players)):
-            self.players.append({"position": i, "player": self.players[i]})
-
-    def __arrange_properties_in_board(self):
-        for i in range(len(self.properties)):
-            self.properties_positions.append(
-                {"position": i + 1, "property": self.properties[i]}
-            )
-
     def __advance_current_player_index(self):
         if self.__current_player_index == len(self.players) - 1:
             self.__current_player_index = 0
@@ -27,9 +17,8 @@ class GameBoard(object):
     def get_current_player(self):
         return self.players[self.__current_player_index]
 
-    def __choose_player(self):
-        chosen_player = self.__get_current_player()
-        # TODO: REVER A CHAMADA DESSE MÉTODO ABAIXO
+    def choose_player(self):
+        chosen_player = self.get_current_player()
         self.__advance_current_player_index()
         return chosen_player["player"]
 
@@ -38,7 +27,7 @@ class GameBoard(object):
             if property["property"].owner == player:
                 property["property"].owner = None
 
-    def __remove_current_player(self):
+    def remove_current_player(self):
         current_player = self.players[self.__current_player_index]
         self.__remove_current_player_properties(current_player)
 
@@ -46,8 +35,8 @@ class GameBoard(object):
         for i in range(len(self.players)):
             self.players[i]["position"] = i
 
-    def __update_player_position(self, position, player):
-        player.position = position
+    def update_player_position(self, position, player):
+        player["player"].position = position
 
     def roll_dice(self):
         return random.randint(1, 6)
@@ -67,7 +56,8 @@ class GameBoard(object):
         return sorted_players[0]
 
     def advance_position_in_board(self, current_position, position):
+        self.update_player_position(position, self.get_current_player())
         new_position = (current_position + position) % 20
         if new_position < current_position:
-            self.__get_current_player().balance += 100
+            self.get_current_player().balance += 100
         return new_position

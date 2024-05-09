@@ -7,7 +7,7 @@ class ImpulsivePlayer(object):
         if property.owner is None and player.balance >= property.sell_value:
             player.balance -= property.sell_value
             property.owner = player
-        else:
+        elif property.owner is not None:
             player.balance -= property.rent_value
             property.owner.balance += property.rent_value
 

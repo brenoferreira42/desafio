@@ -12,13 +12,14 @@ class GameSimulation(object):
         self.__play_round = PlayRound()
 
     def play_turn(self):
-        selected_player = self.board.__choose_player()
-        movement = self.board.roll_dice()
-        self.__update_player_position(movement, selected_player)
-        current_movement = self.__advance_in_board(selected_player.position, movement)
+        selected_player = self.board.choose_player()
+        dice_face = self.board.roll_dice()
+        board_position = self.board.advance_position_in_board(
+            selected_player.position, dice_face
+        )
 
         if selected_player.balance == 0:
-            self.board.__remove_current_player()
+            self.board.remove_current_player()
         if (
             len(self.board.get_players_in_game()) == 0
             and self.board.get_current_player().balance > 0
@@ -27,7 +28,7 @@ class GameSimulation(object):
             return self.board.get_current_player()
         else:
             self.__play_round.play(
-                self.board[current_movement]["property"], selected_player
+                self.board.properties[board_position], selected_player
             )
 
     def play(self):
