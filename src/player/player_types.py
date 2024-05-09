@@ -17,7 +17,7 @@ class DemandingPlayer(object):
         # NOTE: O jogador exigente compra qualquer propriedade, desde que o valor do aluguel dela seja maior do que 50.
         if (
             property.owner is None
-            and property.sell_value > 50
+            and property.rent_value > 50
             and player.balance >= property.sell_value
         ):
             player.balance -= property.sell_value
