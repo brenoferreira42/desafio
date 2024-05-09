@@ -1,7 +1,7 @@
 import random
 
 
-class PlayerType(object):
+class PlayerStrategy(object):
     def play(self, property, player):
         raise NotImplementedError("Method play must be implemented by its subclasses")
 
@@ -16,7 +16,7 @@ class PlayerType(object):
             property.owner.balance += property.rent_value
 
 
-class ImpulsivePlayer(PlayerType):
+class ImpulsivePlayerStrategy(PlayerStrategy):
     # NOTE: O jogador impulsivo compra qualquer propriedade sobre a qual ele parar.
     def play(self, property, player):
         if player.balance >= property.sell_value:
@@ -25,7 +25,7 @@ class ImpulsivePlayer(PlayerType):
         self.pay_rent(property, player)
 
 
-class DemandingPlayer(PlayerType):
+class DemandingPlayerStrategy(PlayerStrategy):
     # NOTE: O jogador exigente compra qualquer propriedade, desde que o valor do aluguel dela seja maior do que 50.
     def play(self, property, player):
         if property.rent_value > 50 and player.balance >= property.sell_value:
@@ -34,7 +34,7 @@ class DemandingPlayer(PlayerType):
         self.pay_rent(property, player)
 
 
-class CautiousPlayer(PlayerType):
+class CautiousPlayerStrategy(PlayerStrategy):
     # NOTE: O jogador cauteloso compra qualquer propriedade desde que ele tenha uma reserva de 80 saldo sobrando depois de realizada a compra.
     def play(self, property, player):
         if (player.balance - property.sell_value) >= 80 and player.balance >= property.sell_value:  # fmt: skip
@@ -43,7 +43,7 @@ class CautiousPlayer(PlayerType):
         self.pay_rent(property, player)
 
 
-class RandomPlayer(PlayerType):
+class RandomPlayerStrategy(PlayerStrategy):
     # NOTE: O jogador aleatório compra a propriedade que ele parar em cima com probabilidade de 50%.
     def play(self, property, player):
         buy_probability = random.random()

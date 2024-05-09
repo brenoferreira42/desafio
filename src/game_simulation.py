@@ -1,7 +1,7 @@
 from src.player.players_generator import PlayersGenerator
 from src.property.properties_generator import PropertiesGenerator
 from src.game_board import GameBoard
-from src.player.play_round import PlayRound
+from src.player.player_strategy_handler import PlayerStrategyHandler
 
 
 class GameSimulation(object):
@@ -9,7 +9,7 @@ class GameSimulation(object):
         self.__players = PlayersGenerator().construct_players()
         self.__properties = PropertiesGenerator().construct_properties()
         self.__board = GameBoard(self.__players, self.__properties)
-        self.__play_round = PlayRound()
+        self.__player_strategy_handler = PlayerStrategyHandler()
         self.__report = report
 
     def __play_turn(self) -> dict:
@@ -27,7 +27,7 @@ class GameSimulation(object):
         ):
             return {"win": True, "winner": selected_player}
         else:
-            self.__play_round.play(
+            self.__player_strategy_handler.play(
                 self.__board.properties[board_position], selected_player
             )
             self.__board.advance_current_player_index()

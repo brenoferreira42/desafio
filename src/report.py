@@ -4,14 +4,14 @@ class Report(object):
 
     def generate_turn_report(self, winner, turn_duration: int):
         behavior_names = {
-            "ImpulsivePlayer": "Impulsivo",
-            "DemandingPlayer": "Exigente",
-            "CautiousPlayer": "Cauteloso",
-            "RandomPlayer": "Aleatório",
+            "ImpulsivePlayerStrategy": "Impulsivo",
+            "DemandingPlayerStrategy": "Exigente",
+            "CautiousPlayerStrategy": "Cauteloso",
+            "RandomPlayerStrategy": "Aleatório",
         }
 
         report = {
-            "winner_behavior": behavior_names[winner.type.__name__],
+            "winner_behavior": behavior_names[winner.strategy.__name__],
             "turn_duration": turn_duration,
         }
 
