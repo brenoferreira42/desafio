@@ -2,7 +2,7 @@ class Report(object):
     def __init__(self):
         self.turn_reports = []
 
-    def generate_turn_report(self, winner, turn_duration):
+    def generate_turn_report(self, winner, turn_duration: int):
         behavior_names = {
             "ImpulsivePlayer": "Impulsivo",
             "DemandingPlayer": "Exigente",

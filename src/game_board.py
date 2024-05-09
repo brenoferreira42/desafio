@@ -34,10 +34,10 @@ class GameBoard(object):
     def update_player_position(self, position, player):
         player["player"].position = position
 
-    def roll_dice(self):
+    def roll_dice(self) -> int:
         return random.randint(1, 6)
 
-    def get_players_in_game(self):
+    def get_players_in_game(self) -> list:
         return self.players
 
     def get_richest_player_in_game(self):
@@ -51,7 +51,7 @@ class GameBoard(object):
 
         return sorted_players[0]
 
-    def advance_position_in_board(self, current_position, position):
+    def advance_position_in_board(self, current_position: int, position: int) -> int:
         self.update_player_position(position, self.get_current_player())
         new_position = (current_position + position) % 20
         if new_position < current_position:

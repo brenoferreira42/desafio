@@ -12,7 +12,7 @@ class GameSimulation(object):
         self.__play_round = PlayRound()
         self.__report = report
 
-    def __play_turn(self):
+    def __play_turn(self) -> dict:
         selected_player = self.__board.choose_player()
         dice_face = self.__board.roll_dice()
         board_position = self.__board.advance_position_in_board(
