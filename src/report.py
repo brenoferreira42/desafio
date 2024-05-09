@@ -3,8 +3,15 @@ class Report(object):
         self.turn_reports = []
 
     def generate_turn_report(self, winner, turn_duration):
+        behavior_names = {
+            "ImpulsivePlayer": "Impulsivo",
+            "DemandingPlayer": "Exigente",
+            "CautiousPlayer": "Cauteloso",
+            "RandomPlayer": "Aleatório",
+        }
+
         report = {
-            "winner_behaviour": winner.type.__name__,
+            "winner_behavior": behavior_names[winner.type.__name__],
             "turn_duration": turn_duration,
         }
 
@@ -19,18 +26,20 @@ class Report(object):
             sum(report["turn_duration"] for report in self.turn_reports) / total_games
         )
 
-        wins_by_behaviour = {}
+        wins_by_behavior = {}
         for report in self.turn_reports:
-            behaviour = report["winner_behaviour"]
-            wins_by_behaviour[behaviour] = wins_by_behaviour.get(behaviour, 0) + 1
+            behavior = report["winner_behavior"]
+            wins_by_behavior[behavior] = wins_by_behavior.get(behavior, 0) + 1
 
-        most_winning_behaviour = max(wins_by_behaviour, key=wins_by_behaviour.get)
+        most_winning_behavior = max(wins_by_behavior, key=wins_by_behavior.get)
 
         print("Estatísticas dos Turnos:\n")
         print(f"Partidas terminadas por time out (1000 rodadas): {timeouts}")
         print(f"Média de turnos por partida: {average_turns:.2f}")
         print("Porcentagem de vitórias por comportamento dos jogadores:")
-        for behaviour, wins in wins_by_behaviour.items():
+
+        for behavior, wins in wins_by_behavior.items():
             win_percentage = (wins / total_games) * 100
-            print(f"  {behaviour}: {win_percentage:.2f}%")
-        print(f"Comportamento que mais vence: {most_winning_behaviour}")
+            print(f"  {behavior}: {win_percentage:.2f}%")
+
+        print(f"Comportamento que mais vence: {most_winning_behavior}")
