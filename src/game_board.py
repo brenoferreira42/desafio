@@ -8,32 +8,31 @@ class GameBoard(object):
         self.players = players
         self.properties = properties
 
-    def __advance_current_player_index(self):
+    def advance_current_player_index(self):
         if self.__current_player_index == len(self.players) - 1:
             self.__current_player_index = 0
         else:
-            self.__current_player_index += 1
+            self.__current_player_index = self.__current_player_index + 1
 
     def get_current_player(self):
         return self.players[self.__current_player_index]
 
     def choose_player(self):
         chosen_player = self.get_current_player()
-        self.__advance_current_player_index()
         return chosen_player["player"]
 
     def __remove_current_player_properties(self, player):
         for property in self.properties:
-            if property["property"].owner == player:
-                property["property"].owner = None
+            if property.owner == player:
+                property.owner = None
 
-    def remove_current_player(self):
+    def remove_current_player(self, player):
         current_player = self.players[self.__current_player_index]
         self.__remove_current_player_properties(current_player)
+        self.players.pop(self.__current_player_index)
 
-        self.players.pop(self.__advance_current_player_index)
-        for i in range(len(self.players)):
-            self.players[i]["position"] = i
+        if self.__current_player_index >= len(self.players):
+            self.__current_player_index = self.__current_player_index - 1
 
     def update_player_position(self, position, player):
         player["player"].position = position
@@ -45,12 +44,12 @@ class GameBoard(object):
         return self.players
 
     def get_richest_player_in_game(self):
-        players_in_game = self.board.get_players_in_game()
+        players_in_game = self.get_players_in_game()
         if not players_in_game:
             return None
 
         sorted_players = sorted(
-            players_in_game, key=lambda x: (x["value"], -x["position"]), reverse=True
+            players_in_game, key=lambda x: (x["player"], -x["position"]), reverse=True
         )
 
         return sorted_players[0]

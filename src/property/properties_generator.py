@@ -1,5 +1,5 @@
 import random
-from property.property import Property
+from src.property.property import Property
 
 
 class PropertiesGenerator:
@@ -9,8 +9,8 @@ class PropertiesGenerator:
         self.__properties_rent_values = []
 
     def __generate_properties_sell_values(self):
-        min_property_value = 150
-        max_property_value = 800
+        min_property_value = 50
+        max_property_value = 250
         total_property_values = 0
 
         for _ in range(20):

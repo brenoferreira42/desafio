@@ -1,7 +1,7 @@
-from player.players_generator import PlayersGenerator
-from property.properties_generator import PropertiesGenerator
-from game_board import GameBoard
-from player.play_round import PlayRound
+from src.player.players_generator import PlayersGenerator
+from src.property.properties_generator import PropertiesGenerator
+from src.game_board import GameBoard
+from src.player.play_round import PlayRound
 
 
 class GameSimulation(object):
@@ -18,26 +18,35 @@ class GameSimulation(object):
             selected_player.position, dice_face
         )
 
-        if selected_player.balance == 0:
-            self.board.remove_current_player()
-        if (
-            len(self.board.get_players_in_game()) == 0
-            and self.board.get_current_player().balance > 0
-        ):
-            # Winner
-            return self.board.get_current_player()
+        if selected_player.balance <= 0:
+            self.board.remove_current_player(selected_player)
+            return {"win": False}
+        elif len(self.board.get_players_in_game()) == 1 and selected_player.balance > 0:
+            return {"win": True, "winner": selected_player}
         else:
             self.__play_round.play(
                 self.board.properties[board_position], selected_player
             )
+            self.board.advance_current_player_index()
+            return {"win": False}
+
+    def generate_turn_report(self, winner, turn_duration):
+        return {
+            "winner_behaviour": winner.type.__name__,
+            "turn_duration": turn_duration,
+        }
 
     def play(self):
+        winner = None
+        turn_duration = 0
         for i in range(1000):
-            if i == 1000:
-                return self.board.get_richest_player_in_game()
-            self.play_turn()
-
-
-if __name__ == "__main__":
-    game_simulation = GameSimulation()
-    game_simulation.play()
+            if not len(self.players) == 0:
+                turn = self.play_turn()
+                if i == 999 and turn["win"] is False:
+                    winner = self.board.get_richest_player_in_game()["player"]
+                    turn_duration = i
+                    return self.generate_turn_report(winner, turn_duration)
+                elif turn["win"] is True:
+                    winner = turn["winner"]
+                    turn_duration = i
+                    return self.generate_turn_report(winner, turn_duration)

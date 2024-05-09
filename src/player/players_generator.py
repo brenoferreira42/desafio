@@ -1,6 +1,6 @@
 import random
-from player.player import Player
-from player.player_types import (
+from src.player.player import Player
+from src.player.player_types import (
     ImpulsivePlayer,
     CautiousPlayer,
     DemandingPlayer,
