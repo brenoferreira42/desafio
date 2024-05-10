@@ -30,6 +30,3 @@ env/
 
 # Ruff cache
 .ruff_cache/
-
-#TODO
-TODO.md
