@@ -1,6 +1,6 @@
 class Report(object):
     def __init__(self):
-        self.turn_reports = []
+        self.__turn_reports = []
 
     def generate_turn_report(self, winner, turn_duration: int):
         behavior_names = {
@@ -15,19 +15,19 @@ class Report(object):
             "turn_duration": turn_duration,
         }
 
-        self.turn_reports.append(report)
+        self.__turn_reports.append(report)
 
     def generate_complete_report(self):
-        total_games = len(self.turn_reports)
+        total_games = len(self.__turn_reports)
         timeouts = sum(
-            1 for report in self.turn_reports if report["turn_duration"] == 999
+            1 for report in self.__turn_reports if report["turn_duration"] == 999
         )
         average_turns = (
-            sum(report["turn_duration"] for report in self.turn_reports) / total_games
+            sum(report["turn_duration"] for report in self.__turn_reports) / total_games
         )
 
         wins_by_behavior = {}
-        for report in self.turn_reports:
+        for report in self.__turn_reports:
             behavior = report["winner_behavior"]
             wins_by_behavior[behavior] = wins_by_behavior.get(behavior, 0) + 1
 
@@ -40,7 +40,7 @@ class Report(object):
 
         sorted_wins_by_behavior = sorted(wins_by_behavior.items(), key=lambda x: x[1])
 
-        for behavior, wins in sorted_wins_by_behavior.items():
+        for behavior, wins in sorted_wins_by_behavior:
             win_percentage = (wins / total_games) * 100
             print(f"  {behavior}: {win_percentage:.2f}%")
 

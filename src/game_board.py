@@ -3,19 +3,20 @@ import random
 
 class GameBoard(object):
     def __init__(self, players, properties):
-        self.current_player_index = 0
-        self.properties_positions = []
-        self.players = players
+        self.__current_player_turn = 0
+        self.__players = players
         self.properties = properties
 
-    def advance_current_player_index(self):
-        self.current_player_index = (self.current_player_index + 1) % len(self.players)
+    def advance_current_player_turn(self):
+        self.__current_player_turn = (self.__current_player_turn + 1) % len(
+            self.__players
+        )
 
-    def get_current_player(self):
-        return self.players[self.current_player_index]
+    def __get_current_player(self):
+        return self.__players[self.__current_player_turn]
 
     def choose_player(self):
-        chosen_player = self.get_current_player()
+        chosen_player = self.__get_current_player()
         return chosen_player["player"]
 
     def __remove_current_player_properties(self, player):
@@ -23,22 +24,22 @@ class GameBoard(object):
             if property.owner == player:
                 property.owner = None
 
-    def remove_current_player(self):
-        current_player = self.players[self.current_player_index]
-        self.__remove_current_player_properties(current_player)
-        self.players.pop(self.current_player_index)
-
-        if self.current_player_index >= len(self.players):
-            self.current_player_index = self.current_player_index - 1
-
-    def update_player_position(self, position, player):
+    def __update_player_position(self, position, player):
         player["player"].position = position
+
+    def remove_current_player(self):
+        current_player = self.__players[self.__current_player_turn]
+        self.__remove_current_player_properties(current_player)
+        self.__players.pop(self.__current_player_turn)
+
+        if self.__current_player_turn >= len(self.__players):
+            self.__current_player_turn = self.__current_player_turn - 1
 
     def roll_dice(self) -> int:
         return random.randint(1, 6)
 
     def get_players_in_game(self) -> list:
-        return self.players
+        return self.__players
 
     def get_richest_player_in_game(self):
         players_in_game = self.get_players_in_game()
@@ -52,8 +53,8 @@ class GameBoard(object):
         return sorted_players[0]
 
     def advance_position_in_board(self, current_position: int, position: int) -> int:
-        self.update_player_position(position, self.get_current_player())
+        self.__update_player_position(position, self.__get_current_player())
         new_position = (current_position + position) % 20
         if new_position < current_position:
-            self.get_current_player().balance += 100
+            self.__get_current_player().balance += 100
         return new_position

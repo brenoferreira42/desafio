@@ -4,7 +4,7 @@ from src.property.property import Property
 
 class PropertiesGenerator:
     def __init__(self):
-        self.properties = []
+        self.__properties = []
         self.__properties_sell_values = []
         self.__properties_rent_values = []
 
@@ -39,6 +39,6 @@ class PropertiesGenerator:
             current_property = Property(
                 self.__properties_sell_values[i], self.__properties_rent_values[i]
             )
-            self.properties.append(current_property)
+            self.__properties.append(current_property)
 
-        return self.properties
+        return self.__properties

@@ -22,15 +22,13 @@ class GameSimulation(object):
         if selected_player.balance <= 0:
             self.__board.remove_current_player()
             return {"win": False}
-        elif (
-            len(self.__board.get_players_in_game()) == 1 and selected_player.balance > 0
-        ):
+        elif (len(self.__board.get_players_in_game()) == 1 and selected_player.balance > 0):  # fmt: skip
             return {"win": True, "winner": selected_player}
         else:
             self.__player_strategy_handler.play(
                 self.__board.properties[board_position], selected_player
             )
-            self.__board.advance_current_player_index()
+            self.__board.advance_current_player_turn()
             return {"win": False}
 
     def play(self):
